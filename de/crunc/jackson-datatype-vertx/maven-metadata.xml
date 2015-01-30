@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-  <groupId>de.jegair</groupId>
+  <groupId>de.crunc</groupId>
   <artifactId>jackson-datatype-vertx</artifactId>
   <versioning>
     <versions>
       <version>2.1-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20150130150253</lastUpdated>
+    <lastUpdated>20150130150407</lastUpdated>
   </versioning>
 </metadata>
