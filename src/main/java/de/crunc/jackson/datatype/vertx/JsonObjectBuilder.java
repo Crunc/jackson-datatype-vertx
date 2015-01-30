@@ -11,7 +11,7 @@ import java.util.Map;
  * Fluent builder for {@link JsonObject}.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
- * @since 2.2.2
+ * @since 2.1
  */
 public class JsonObjectBuilder {
 
@@ -22,88 +22,137 @@ public class JsonObjectBuilder {
     }
 
     /**
-     * @since 2.2.2
+     * Adds an object field to the object.
+     *
+     * @param name   The name of the field.
+     * @param object The object that will be added. Can be {@code null} in which case {@code null} is added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable JsonObject object) {
-        values.put(field, object);
+    public JsonObjectBuilder put(String name, @Nullable JsonObject object) {
+        values.put(name, object);
         return this;
     }
 
     /**
-     * @since 2.2.2
+     * Adds an object field to the object.
+     *
+     * @param name    The name of the field.
+     * @param builder The builder for the object that will be added. Can be {@code null} in which case {@code null} is
+     *                added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable JsonObjectBuilder objectBuilder) {
-        if (objectBuilder != null) {
-            return put(field, objectBuilder.build());
+    public JsonObjectBuilder put(String name, @Nullable JsonObjectBuilder builder) {
+        if (builder != null) {
+            return put(name, builder.build());
         }
-        return put(field, (JsonObject)null);
+        return put(name, (JsonObject) null);
     }
 
     /**
-     * @since 2.2.2
+     * Adds an array field to the object.
+     *
+     * @param name  The name of the field.
+     * @param array The array that will be added. Can be {@code null} in which case {@code null} is added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable JsonArray array) {
-        values.put(field, array);
+    public JsonObjectBuilder put(String name, @Nullable JsonArray array) {
+        values.put(name, array);
         return this;
     }
 
     /**
-     * @since 2.2.2
+     * Adds an array field to the object.
+     *
+     * @param name    The name of the field.
+     * @param builder The builder for the array that will be added. Can be {@code null} in which case {@code null} is
+     *                added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable JsonArrayBuilder arrayBuilder) {
-        if (arrayBuilder != null) {
-            return put(field, arrayBuilder.build());
+    public JsonObjectBuilder put(String name, @Nullable JsonArrayBuilder builder) {
+        if (builder != null) {
+            return put(name, builder.build());
         }
-        return put(field, (JsonArray)null);
+        return put(name, (JsonArray) null);
     }
 
     /**
-     * @since 2.2.2
+     * Adds a string field to the object.
+     *
+     * @param name   The name of the field.
+     * @param string The string that will be added. Can be {@code null} in which case {@code null} is added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable String string) {
-        values.put(field, string);
+    public JsonObjectBuilder put(String name, @Nullable String string) {
+        values.put(name, string);
         return this;
     }
 
     /**
-     * @since 2.2.2
+     * Adds a number field to the object.
+     *
+     * @param name   The name of the field.
+     * @param number The number that will be added. Can be {@code null} in which case {@code null} is added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable Number number) {
-        values.put(field, number);
+    public JsonObjectBuilder put(String name, @Nullable Number number) {
+        values.put(name, number);
         return this;
     }
 
     /**
-     * @since 2.2.2
+     * Adds a boolean field to the object.
+     *
+     * @param name The name of the field.
+     * @param bool The boolean value that will be added. Can be {@code null} in which case {@code null} is added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable Boolean bool) {
-        values.put(field, bool);
+    public JsonObjectBuilder put(String name, @Nullable Boolean bool) {
+        values.put(name, bool);
         return this;
     }
 
     /**
-     * @since 2.2.2
+     * Adds binary data field to the object.
+     *
+     * @param name  The name of the field.
+     * @param bytes The binary data that will be added. Can be {@code null} in which case {@code null} is added.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder put(String field, @Nullable byte[] bytes) {
-        values.put(field, bytes);
+    public JsonObjectBuilder put(String name, @Nullable byte[] bytes) {
+        values.put(name, bytes);
         return this;
     }
 
     /**
-     * @since 2.2.2
+     * Adds {@code null} field to the object.
+     *
+     * @param name The name of the field.
+     * @return {@code this}
+     * @since 2.1
      */
-    public JsonObjectBuilder putNull(String field) {
-        values.put(field, null);
+    public JsonObjectBuilder putNull(String name) {
+        values.put(name, null);
         return this;
     }
 
     /**
-     * @since 2.2.2
+     * Builds a new object which contains the fields that have been added to this builder so far.
+     *
+     * @return a new object.
+     * @since 2.1
      */
     public JsonObject build() {
         JsonObject object = new JsonObject();
 
-        for (Map.Entry<String, Object> entry: values.entrySet()) {
+        for (Map.Entry<String, Object> entry : values.entrySet()) {
             object.putValue(entry.getKey(), entry.getValue());
         }
 
@@ -111,14 +160,21 @@ public class JsonObjectBuilder {
     }
 
     /**
-     * @since 2.2.2
+     * Builds a new object which contains the fields that have been added to this builder so far and encodes it as a
+     * JSON string like {@code "{"foo":17,"bar":false}"}
+     *
+     * @return a JSON object string.
+     * @since 2.1
      */
     public String encode() {
         return build().encode();
     }
 
     /**
-     * @since 2.2.2
+     * Factory method for creating a new builder.
+     *
+     * @return A new builder.
+     * @since 2.1
      */
     public static JsonObjectBuilder object() {
         return new JsonObjectBuilder();

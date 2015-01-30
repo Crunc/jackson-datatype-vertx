@@ -15,11 +15,22 @@ import java.lang.reflect.Type;
  * Serializes values of type {@link JsonArray}.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
- * @since 2.2.2
+ * @since 2.1
  */
 class JsonArraySerializer extends JsonBaseSerializer<JsonArray> {
-    public final static JsonArraySerializer instance = new JsonArraySerializer();
 
+    /**
+     * Singleton instance of {@link JsonArraySerializer}
+     *
+     * @since 2.1
+     */
+    public final static JsonArraySerializer INSTANCE = new JsonArraySerializer();
+
+    /**
+     * Creates a new serializer.
+     *
+     * @since 2.1
+     */
     JsonArraySerializer() {
         super(JsonArray.class);
     }
@@ -60,7 +71,7 @@ class JsonArraySerializer extends JsonBaseSerializer<JsonArray> {
             }
             Class<?> cls = ob.getClass();
             if (cls == JsonObject.class) {
-                JsonObjectSerializer.instance.serialize((JsonObject) ob, jgen, provider);
+                JsonObjectSerializer.INSTANCE.serialize((JsonObject) ob, jgen, provider);
             } else if (cls == JsonArray.class) {
                 serialize((JsonArray) ob, jgen, provider);
             } else if (cls == String.class) {
@@ -74,11 +85,11 @@ class JsonArraySerializer extends JsonBaseSerializer<JsonArray> {
             } else if (cls == Double.class) {
                 jgen.writeNumber(((Double) ob).doubleValue());
             } else if (JsonObject.class.isAssignableFrom(cls)) { // sub-class
-                JsonObjectSerializer.instance.serialize((JsonObject) ob, jgen, provider);
+                JsonObjectSerializer.INSTANCE.serialize((JsonObject) ob, jgen, provider);
             } else if (JsonArray.class.isAssignableFrom(cls)) { // sub-class
                 serialize((JsonArray) ob, jgen, provider);
             } else if (JsonArray.class.isAssignableFrom(cls)) { // sub-class
-                JsonArraySerializer.instance.serialize((JsonArray) ob, jgen, provider);
+                JsonArraySerializer.INSTANCE.serialize((JsonArray) ob, jgen, provider);
             } else {
                 provider.defaultSerializeValue(ob, jgen);
             }

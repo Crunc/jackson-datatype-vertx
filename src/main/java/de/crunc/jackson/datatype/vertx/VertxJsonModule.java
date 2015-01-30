@@ -5,23 +5,33 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
+import java.io.Serializable;
+
 /**
  * Provides Serializers and Deserializers for {@link JsonObject} and {@link JsonArray}.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
- * @since 2.2.2
+ * @since 2.1
  */
 public class VertxJsonModule extends SimpleModule {
-    
-    private static final long serialVersionUID = 1;
+
+    /**
+     * @see Serializable
+     */
+    private static final long serialVersionUID = 4038489993817232066L;
 
     private final static String NAME = "VertxJsonModule";
 
+    /**
+     * Creates a new module.
+     *
+     * @since 2.1
+     */
     public VertxJsonModule() {
-        super(NAME, VersionUtil.parseVersion("2.2.2-SNAPSHOT", "de.jegair", "jackson-datatype-vertx"));
-        addDeserializer(JsonArray.class, JsonArrayDeserializer.instance);
-        addDeserializer(JsonObject.class, JsonObjectDeserializer.instance);
-        addSerializer(JsonArraySerializer.instance);
-        addSerializer(JsonObjectSerializer.instance);
+        super(NAME, VersionUtil.parseVersion("2.1-SNAPSHOT", "de.crunc", "jackson-datatype-vertx"));
+        addDeserializer(JsonArray.class, JsonArrayDeserializer.INSTANCE);
+        addDeserializer(JsonObject.class, JsonObjectDeserializer.INSTANCE);
+        addSerializer(JsonArraySerializer.INSTANCE);
+        addSerializer(JsonObjectSerializer.INSTANCE);
     }
 }

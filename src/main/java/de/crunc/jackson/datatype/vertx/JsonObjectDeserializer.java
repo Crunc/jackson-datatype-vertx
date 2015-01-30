@@ -7,18 +7,33 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.vertx.java.core.json.JsonObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Deserializer which produces {@link JsonObject}.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
- * @since 2.2.2
+ * @since 2.1
  */
 class JsonObjectDeserializer extends StdDeserializer<JsonObject> {
-    private static final long serialVersionUID = 1L;
 
-    public final static JsonObjectDeserializer instance = new JsonObjectDeserializer();
+    /**
+     * @see Serializable
+     */
+    private static final long serialVersionUID = 4883042507402315060L;
 
+    /**
+     * Singleton instance of {@link JsonObjectDeserializer}
+     *
+     * @since 2.1
+     */
+    public final static JsonObjectDeserializer INSTANCE = new JsonObjectDeserializer();
+
+    /**
+     * Creates a new deserializer.
+     *
+     * @since 2.1
+     */
     JsonObjectDeserializer() {
         super(JsonObject.class);
     }
@@ -38,7 +53,7 @@ class JsonObjectDeserializer extends StdDeserializer<JsonObject> {
 
             switch (t) {
                 case START_ARRAY:
-                    builder.put(fieldName, JsonArrayDeserializer.instance.deserialize(jp, ctxt));
+                    builder.put(fieldName, JsonArrayDeserializer.INSTANCE.deserialize(jp, ctxt));
                     continue;
                 case START_OBJECT:
                     builder.put(fieldName, deserialize(jp, ctxt));

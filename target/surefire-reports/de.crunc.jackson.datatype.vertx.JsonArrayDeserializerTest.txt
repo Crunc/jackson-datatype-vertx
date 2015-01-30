@@ -1,13 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: de.crunc.jackson.datatype.vertx.JsonArrayDeserializerTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.187 sec <<< FAILURE! - in de.crunc.jackson.datatype.vertx.JsonArrayDeserializerTest
-testDeserializeArray(de.crunc.jackson.datatype.vertx.JsonArrayDeserializerTest)  Time elapsed: 0.021 sec  <<< ERROR!
-java.lang.NullPointerException: null
-	at org.vertx.java.core.json.JsonArray.equals(JsonArray.java:158)
-	at org.hamcrest.core.IsEqual.areEqual(IsEqual.java:43)
-	at org.hamcrest.core.IsEqual.matches(IsEqual.java:26)
-	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:12)
-	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:8)
-	at de.crunc.jackson.datatype.vertx.JsonArrayDeserializerTest.testDeserializeArray(JsonArrayDeserializerTest.java:65)
-
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.172 sec - in de.crunc.jackson.datatype.vertx.JsonArrayDeserializerTest

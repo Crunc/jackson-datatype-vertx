@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: de.crunc.jackson.datatype.vertx.JsonObjectDeserializerTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in de.crunc.jackson.datatype.vertx.JsonObjectDeserializerTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in de.crunc.jackson.datatype.vertx.JsonObjectDeserializerTest
