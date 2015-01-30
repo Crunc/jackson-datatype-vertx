@@ -1,0 +1,10 @@
+de\crunc\jackson\datatype\vertx\JsonArrayBuilder.class
+de\crunc\jackson\datatype\vertx\JsonObjectDeserializer.class
+de\crunc\jackson\datatype\vertx\JsonArrayDeserializer$1.class
+de\crunc\jackson\datatype\vertx\JsonObjectBuilder.class
+de\crunc\jackson\datatype\vertx\VertxJsonModule.class
+de\crunc\jackson\datatype\vertx\JsonArrayDeserializer.class
+de\crunc\jackson\datatype\vertx\JsonArraySerializer.class
+de\crunc\jackson\datatype\vertx\JsonObjectDeserializer$1.class
+de\crunc\jackson\datatype\vertx\JsonBaseSerializer.class
+de\crunc\jackson\datatype\vertx\JsonObjectSerializer.class

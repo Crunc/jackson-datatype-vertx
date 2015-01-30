@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: de.crunc.jackson.datatype.vertx.JsonArraySerializerTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 sec - in de.crunc.jackson.datatype.vertx.JsonArraySerializerTest
