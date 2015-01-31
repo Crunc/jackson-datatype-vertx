@@ -21,8 +21,8 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <javac.source.version>1.7</javac.source.version>
-        <javac.target.version>1.7</javac.target.version>
+        <javac.source.version>1.6</javac.source.version>
+        <javac.target.version>1.6</javac.target.version>
 
         <version.jackson-core>2.2.2</version.jackson-core>
         <version.vertx-core>2.1.5</version.vertx-core>

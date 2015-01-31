@@ -19,7 +19,7 @@ public class JsonArrayBuilder {
     private final List<Object> values;
 
     private JsonArrayBuilder() {
-        values = new ArrayList<>();
+        values = new ArrayList<Object>();
     }
 
     /**

@@ -18,7 +18,7 @@ public class JsonObjectBuilder {
     private final Map<String, Object> values;
 
     private JsonObjectBuilder() {
-        values = new HashMap<>();
+        values = new HashMap<String, Object>();
     }
 
     /**
