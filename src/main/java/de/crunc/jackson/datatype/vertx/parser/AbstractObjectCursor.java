@@ -22,7 +22,7 @@ abstract class AbstractObjectCursor<T, E> extends AbstractTreeCursor<E> {
     /**
      * Iterates over all fields of the object.
      */
-    private final Iterator<String> fields;
+    private final SkippableIterator<String> fields;
 
     /**
      * The token for the current position of the cursor.
@@ -55,7 +55,7 @@ abstract class AbstractObjectCursor<T, E> extends AbstractTreeCursor<E> {
         }
 
         object = jsonObject;
-        fields = getFields(object);
+        fields = new SkippableIterator<String>(getFields(object));
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class AbstractObjectCursor<T, E> extends AbstractTreeCursor<E> {
                 currentValue = null;
             }
         }
-        
+
         // update currentName
         currentName = currentFieldName;
 
@@ -120,6 +120,11 @@ abstract class AbstractObjectCursor<T, E> extends AbstractTreeCursor<E> {
             t = nextToken();
         }
         return t;
+    }
+
+    @Override
+    public void skipChildren() {
+        fields.skip();
     }
 
     @Override

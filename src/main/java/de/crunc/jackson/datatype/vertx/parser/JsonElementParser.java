@@ -2,9 +2,7 @@ package de.crunc.jackson.datatype.vertx.parser;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.base.ParserMinimalBase;
-import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonElement;
-import org.vertx.java.core.json.JsonObject;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -29,10 +27,17 @@ public class JsonElementParser extends ParserMinimalBase {
 
     protected ObjectCodec objectCodec;
 
+    protected final AbstractTreeCursor<Object> rootCursor;
+
     /**
      * Traversal context within tree
      */
     protected AbstractTreeCursor<Object> cursor;
+
+    /**
+     * The name of the current node.
+     */
+    protected String currentName;
 
     /*
     /**********************************************************
@@ -46,11 +51,11 @@ public class JsonElementParser extends ParserMinimalBase {
      */
     protected JsonToken nextToken;
 
-    /**
-     * Flag needed to handle recursion into contents of child
-     * Array/Object nodes.
-     */
-    protected boolean startContainer;
+//    /**
+//     * Flag needed to handle recursion into contents of child
+//     * Array/Object nodes.
+//     */
+//    protected boolean startContainer;
 
     /**
      * Flag that indicates whether parser is closed or not. Gets
@@ -71,7 +76,8 @@ public class JsonElementParser extends ParserMinimalBase {
         }
 
         objectCodec = codec;
-        cursor = new JsonElementRootCursor(element);
+        rootCursor = new JsonElementRootCursor(element);
+        cursor = rootCursor;
     }
 
     @Override
@@ -100,60 +106,58 @@ public class JsonElementParser extends ParserMinimalBase {
 
     @Override
     public JsonToken nextToken() throws IOException {
-//        if (nextToken != null) {
-//            _currToken = nextToken;
-//            nextToken = null;
-//            return _currToken;
-//        }
-        
-        // are we to descend to a container child?
-        if (startContainer) {
-            startContainer = false;
-            
-            // minor optimization: empty containers can be skipped
-            if (!cursor.currentHasChildren()) {
-                _currToken = (_currToken == START_OBJECT) ? END_OBJECT : END_ARRAY;
-                return _currToken;
-            }
-            
-            cursor = cursor.iterateChildren();
-            _currToken = cursor.nextToken();
-            if ((_currToken == START_OBJECT) || (_currToken == START_ARRAY)) {
-                startContainer = true;
-            }
-            return _currToken;
-        }
-        
-        // No more content?
-        if (cursor == null) {
-            closed = true; // if not already set
+        return nextTokenInternal(false);
+    }
+
+    private JsonToken nextTokenInternal(boolean skipChildren) {
+
+        if (closed) {
+            _currToken = null;
             return null;
         }
-        
-        // Otherwise, next entry from current cursor
-        _currToken = cursor.nextToken();
-        
-        if (_currToken != null) {
+
+        if (skipChildren) {
             if (_currToken == START_OBJECT || _currToken == START_ARRAY) {
-                startContainer = true;
+                cursor.skipChildren();
             }
-            return _currToken;
         }
-        
-        // null means no more children; need to return end marker
-        _currToken = cursor.endToken();
-        cursor = cursor.getParent();
+
+        if (_currToken == END_OBJECT || _currToken == END_ARRAY) {
+            if (cursor != rootCursor) {
+                cursor = cursor.getParent();
+            } else {
+                closed = true;
+            }
+
+            updateInternalValues();
+        }
+
+        // next entry from current cursor
+        _currToken = cursor.nextToken();
+
+        if (_currToken != null) {
+            updateInternalValues();
+            if (_currToken == START_OBJECT || _currToken == START_ARRAY) {
+                cursor = cursor.iterateChildren();
+            }
+        } else {
+            // null means no more children; need to return end marker
+            _currToken = cursor.endToken();
+        }
+
         return _currToken;
+    }
+
+    private void updateInternalValues() {
+        if (cursor != null) {
+            currentName = cursor.getCurrentName();
+        }
     }
 
     @Override
     public JsonParser skipChildren() throws IOException {
-        if (_currToken == START_OBJECT) {
-            startContainer = false;
-            _currToken = END_OBJECT;
-        } else if (_currToken == START_ARRAY) {
-            startContainer = false;
-            _currToken = END_ARRAY;
+        if (_currToken == START_OBJECT || _currToken == START_ARRAY) {
+            nextTokenInternal(true);
         }
         return this;
     }
@@ -165,7 +169,8 @@ public class JsonElementParser extends ParserMinimalBase {
 
     @Override
     public String getCurrentName() {
-        return (cursor == null) ? null : cursor.getCurrentName();
+        return currentName;
+        //(cursor == null) ? null : cursor.getCurrentName();
     }
 
     @Override
@@ -177,7 +182,10 @@ public class JsonElementParser extends ParserMinimalBase {
 
     @Override
     public JsonStreamContext getParsingContext() {
-        return cursor;
+        if (cursor != null) {
+            return cursor;
+        }
+        return rootCursor;
     }
 
     @Override
@@ -195,11 +203,11 @@ public class JsonElementParser extends ParserMinimalBase {
         if (closed) {
             return null;
         }
-        
+
         if (_currToken == null) {
             return null;
         }
-        
+
         switch (_currToken) {
             case FIELD_NAME:
                 return cursor.getCurrentName();
@@ -383,8 +391,7 @@ public class JsonElementParser extends ParserMinimalBase {
 
         if (n instanceof Number) {
             return (Number) n;
-        }
-        else if(n instanceof String) {
+        } else if (n instanceof String) {
             try {
                 return new BigDecimal((String) n);
             } catch (NumberFormatException e) {

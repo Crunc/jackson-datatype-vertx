@@ -79,6 +79,11 @@ abstract class AbstractRootCursor<S, E> extends AbstractTreeCursor<E> {
     }
 
     @Override
+    public void skipChildren() {
+        done = true;
+    }
+
+    @Override
     public JsonToken endToken() {
         return null;
     }

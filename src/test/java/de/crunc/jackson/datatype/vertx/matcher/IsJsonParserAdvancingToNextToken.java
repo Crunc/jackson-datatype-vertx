@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNull;
 
@@ -15,9 +15,10 @@ import java.io.IOException;
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  */
-public class IsJsonParserAdvancingToNextToken extends TypeSafeDiagnosingMatcher<JsonParser> {
+public class IsJsonParserAdvancingToNextToken extends TypeSafeMatcher<JsonParser> {
 
     private final Matcher<? super JsonToken> matcher;
+    private JsonToken token;
 
     public IsJsonParserAdvancingToNextToken(JsonToken expectedToken) {
         this(new IsEqual<JsonToken>(expectedToken));
@@ -35,23 +36,19 @@ public class IsJsonParserAdvancingToNextToken extends TypeSafeDiagnosingMatcher<
     }
 
     @Override
-    protected boolean matchesSafely(JsonParser item, Description mismatchDescription) {
-        
-        final JsonToken nextToken;
-        
+    protected boolean matchesSafely(JsonParser parser) {
         try {
-            nextToken = item.nextToken();
+            token = parser.nextToken();
         } catch (IOException e) {
-            mismatchDescription.appendText("failed to advance to next token: ")
-                    .appendValue(e);
-            return false;
+            throw new AssertionError(e);
         }
-        
-        if (!matcher.matches(nextToken)) {
-            matcher.describeMismatch(nextToken, mismatchDescription);
-            return false;
-        }
-        
-        return true;
+
+        return matcher.matches(token);
+    }
+
+    @Override
+    protected void describeMismatchSafely(JsonParser parser, Description mismatchDescription) {
+        mismatchDescription.appendText("token ");
+        matcher.describeMismatch(token, mismatchDescription);
     }
 }

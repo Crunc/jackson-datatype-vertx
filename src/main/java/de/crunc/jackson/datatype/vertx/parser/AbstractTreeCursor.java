@@ -76,6 +76,13 @@ abstract class AbstractTreeCursor<E> extends JsonStreamContext {
     public abstract JsonToken nextValue();
 
     /**
+     * Advance the cursor behind the last child.
+     *
+     * @since 2.1
+     */
+    public abstract void skipChildren();
+
+    /**
      * Retrieve the end token for the structure this cursor traverses. If this cursor traverses a JSON object structure
      * then {@link JsonToken#END_OBJECT} must be returned. If this cursor traverses a JSON array structure then
      * {@link JsonToken#END_ARRAY} must be returned.
@@ -100,7 +107,7 @@ abstract class AbstractTreeCursor<E> extends JsonStreamContext {
      * @since 2.1
      */
     public abstract boolean currentHasChildren();
-    
+
     /**
      * Retrieve the number of children (if any) for the given element. If the element is not a structure which can have
      * children a negative number must be returned.

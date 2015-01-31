@@ -1,8 +1,6 @@
 package de.crunc.jackson.datatype.vertx.parser;
 
-import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonStreamContext;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,7 +11,8 @@ import static com.fasterxml.jackson.core.JsonToken.*;
 import static de.crunc.jackson.datatype.vertx.JsonArrayBuilder.array;
 import static de.crunc.jackson.datatype.vertx.JsonObjectBuilder.object;
 import static de.crunc.jackson.datatype.vertx.matcher.JsonParserMatchers.*;
-import static de.crunc.jackson.datatype.vertx.matcher.MoreMatchers.*;
+import static de.crunc.jackson.datatype.vertx.matcher.MoreMatchers.closeTo;
+import static de.crunc.jackson.datatype.vertx.matcher.MoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
@@ -22,7 +21,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithBooleanTrue() {
-        jp = createParser(object().put("BooleanTrue", true));
+        jp = createParser(object()
+                .put("BooleanTrue", true));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -37,7 +37,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithBooleanFalse() {
-        jp = createParser(object().put("BooleanFalse", false));
+        jp = createParser(object()
+                .put("BooleanFalse", false));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -52,7 +53,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithIntegerValue() {
-        jp = createParser(object().put("Integer", 42));
+        jp = createParser(object()
+                .put("Integer", 42));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -72,7 +74,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithLongValue() {
-        jp = createParser(object().put("Long", 42L));
+        jp = createParser(object()
+                .put("Long", 42L));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -92,7 +95,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithFloatValue() {
-        jp = createParser(object().put("Float", 17.82f));
+        jp = createParser(object()
+                .put("Float", 17.82f));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -112,7 +116,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithDoubleValue() {
-        jp = createParser(object().put("Float", 17.82));
+        jp = createParser(object()
+                .put("Float", 17.82));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -132,7 +137,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithNumericStringValue() {
-        jp = createParser(object().put("NumericString", "13.37"));
+        jp = createParser(object()
+                .put("NumericString", "13.37"));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -152,7 +158,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithNullValue() {
-        jp = createParser(object().putNull("NullValue"));
+        jp = createParser(object()
+                .putNull("NullValue"));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -167,7 +174,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithEmptyChildObject() {
-        jp = createParser(object().put("EmptyObject", object()));
+        jp = createParser(object()
+                .put("EmptyObject", object()));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 
@@ -186,7 +194,8 @@ public class JsonElementParserObjectTest extends JsonElementParserBaseTest {
 
     @Test
     public void shouldParseObjectWithEmptyChildArray() {
-        jp = createParser(object().put("EmptyArray", array()));
+        jp = createParser(object()
+                .put("EmptyArray", array()));
 
         assertThat(jp, hasCurrentToken(nullValue()));
 

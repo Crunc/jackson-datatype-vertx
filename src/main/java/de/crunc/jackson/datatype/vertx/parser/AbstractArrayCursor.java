@@ -22,7 +22,7 @@ abstract class AbstractArrayCursor<A, E> extends AbstractTreeCursor<E> {
     /**
      * Iterates over all items of the array.
      */
-    private final Iterator<E> elements;
+    private final SkippableIterator<E> elements;
 
     /**
      * The token for the current position of the cursor.
@@ -55,7 +55,7 @@ abstract class AbstractArrayCursor<A, E> extends AbstractTreeCursor<E> {
         }
 
         array = jsonArray;
-        elements = getElements(array);
+        elements = new SkippableIterator<E>(getElements(array));
     }
 
     /**
@@ -91,6 +91,11 @@ abstract class AbstractArrayCursor<A, E> extends AbstractTreeCursor<E> {
     @Override
     public JsonToken nextValue() {
         return nextToken();
+    }
+
+    @Override
+    public void skipChildren() {
+        elements.skip();
     }
 
     @Override
