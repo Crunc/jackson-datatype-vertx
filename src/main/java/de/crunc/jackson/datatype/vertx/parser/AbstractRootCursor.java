@@ -36,6 +36,7 @@ abstract class AbstractRootCursor<S, E> extends AbstractTreeCursor<E> {
         }
 
         root = rootElement;
+        _index = -1;
     }
 
     /**
@@ -63,6 +64,7 @@ abstract class AbstractRootCursor<S, E> extends AbstractTreeCursor<E> {
             done = true;
             currentElement = getRootValue(root);
             currentToken = getRootToken(root);
+            _index = 0;
         }
         else {
             // 2nd, 3rd, ... step

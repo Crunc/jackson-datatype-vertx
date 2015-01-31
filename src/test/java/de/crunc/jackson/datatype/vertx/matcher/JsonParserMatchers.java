@@ -209,6 +209,20 @@ public final class JsonParserMatchers {
                 JsonToken.VALUE_EMBEDDED_OBJECT
         );
     }
+    
+    public static Matcher<JsonToken> startToken() {
+        return isOneOf(
+                JsonToken.START_OBJECT,
+                JsonToken.START_ARRAY
+        );
+    }
+
+    public static Matcher<JsonToken> endToken() {
+        return isOneOf(
+                JsonToken.END_OBJECT,
+                JsonToken.END_ARRAY
+        );
+    }
 
     private JsonParserMatchers() {
         throw new UnsupportedOperationException(JsonParserMatchers.class.getName() + " may not be instantiated");

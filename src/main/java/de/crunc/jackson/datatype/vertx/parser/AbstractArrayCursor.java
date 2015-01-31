@@ -35,11 +35,6 @@ abstract class AbstractArrayCursor<A, E> extends AbstractTreeCursor<E> {
     private E currentElement;
 
     /**
-     * The index of the current element according the the iteration order.
-     */
-    private int currentIndex = -1;
-
-    /**
      * Creates a new cursor with the given parent. If the parent is {@code null} then this cursor can be considered a
      * root level cursor.
      *
@@ -56,6 +51,7 @@ abstract class AbstractArrayCursor<A, E> extends AbstractTreeCursor<E> {
 
         array = jsonArray;
         elements = new SkippableIterator<E>(getElements(array));
+        _index = -1;
     }
 
     /**
@@ -72,18 +68,17 @@ abstract class AbstractArrayCursor<A, E> extends AbstractTreeCursor<E> {
     public JsonToken nextToken() {
         // step to next element
         if (elements.hasNext()) {
-            ++currentIndex;
             currentElement = elements.next();
             currentToken = getToken(currentElement);
+            ++_index;
         } else {
             // no more fields
-            currentIndex = -1;
             currentToken = null;
             currentElement = null;
         }
         
         // update currentName
-        currentName = String.valueOf(currentIndex);
+        currentName = String.valueOf(_index);
         
         return currentToken;
     }

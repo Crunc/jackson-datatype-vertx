@@ -56,6 +56,7 @@ abstract class AbstractObjectCursor<T, E> extends AbstractTreeCursor<E> {
 
         object = jsonObject;
         fields = new SkippableIterator<String>(getFields(object));
+        _index = -1;
     }
 
     /**
@@ -99,6 +100,7 @@ abstract class AbstractObjectCursor<T, E> extends AbstractTreeCursor<E> {
                 currentToken = JsonToken.FIELD_NAME;
                 currentFieldName = fields.next();
                 currentValue = getValue(currentFieldName, object);
+                ++_index;
             } else {
                 // no more fields
                 currentToken = null;
