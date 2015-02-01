@@ -15,13 +15,35 @@ import java.io.IOException;
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  * @since 2.1
  */
-public final class ObjectMapping {
+public class ObjectMapping {
 
-    public static <T> T unmarshall(JsonElement jsonElement, Class<T> type, ObjectMapper objectMapper) throws IOException {
-        return objectMapper.readValue(new JsonElementParser(jsonElement), type);
+    private final ObjectMapper om;
+    
+    public ObjectMapping(ObjectMapper objectMapper) {
+        om = objectMapper;
     }
 
-    private ObjectMapping() {
-        throw new UnsupportedOperationException(ObjectMapping.class.getName() + " may not be instantiated");
+    public <T> T unmarshall(JsonElement jsonElement, Class<T> type) throws IOException {
+        return om.readValue(new JsonElementParser(jsonElement), type);
+    }
+
+    public <T> T unmarshall(JsonObjectBuilder builder, Class<T> type) throws IOException {
+        return unmarshall(builder.build(), type);
+    }
+
+    public <T> T unmarshall(JsonArrayBuilder builder, Class<T> type) throws IOException {
+        return unmarshall(builder.build(), type);
+    }
+
+    public static <T> T unmarshall(JsonElement jsonElement, Class<T> type, ObjectMapper objectMapper) throws IOException {
+        return new ObjectMapping(objectMapper).unmarshall(jsonElement, type);
+    }
+
+    public static <T> T unmarshall(JsonObjectBuilder builder, Class<T> type, ObjectMapper objectMapper) throws IOException {
+        return unmarshall(builder.build(), type, objectMapper);
+    }
+
+    public static <T> T unmarshall(JsonArrayBuilder builder, Class<T> type, ObjectMapper objectMapper) throws IOException {
+        return unmarshall(builder.build(), type, objectMapper);
     }
 }

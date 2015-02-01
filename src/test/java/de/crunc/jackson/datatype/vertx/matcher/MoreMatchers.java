@@ -2,6 +2,10 @@ package de.crunc.jackson.datatype.vertx.matcher;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.hamcrest.collection.IsArrayContaining;
+import org.hamcrest.collection.IsArrayContainingInOrder;
+
+import java.util.Arrays;
 
 /**
  * Provides some additional matcher factory methods like {@link Matchers#equalTo(Object)}.

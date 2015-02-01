@@ -17,11 +17,11 @@ import static de.crunc.jackson.datatype.vertx.matcher.MoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Integration test for {@link JsonElementParser} with {@link ObjectMapper}
+ * Integration test for {@link JsonElementParser} with {@link ObjectMapper}.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  */
-public class JsonElementParserBasicMappingTest extends JsonElementParserBaseTest {
+public class JsonElementParserPojoMappingTest extends JsonElementParserBaseTest {
 
     private ObjectMapper objectMapper;
     private JsonParser jp;

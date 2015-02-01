@@ -160,51 +160,42 @@ public class PrimitivePojo {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        PrimitivePojo that = (PrimitivePojo) o;
-
-        if (Double.compare(that.doubleValue, doubleValue) != 0) return false;
-        if (Float.compare(that.floatValue, floatValue) != 0) return false;
-        if (intValue != that.intValue) return false;
-        if (longValue != that.longValue) return false;
-        if (bigDecimalValue != null ? !bigDecimalValue.equals(that.bigDecimalValue) : that.bigDecimalValue != null)
-            return false;
-        if (bigIntegerValue != null ? !bigIntegerValue.equals(that.bigIntegerValue) : that.bigIntegerValue != null)
-            return false;
-        if (doubleValueBoxed != null ? !doubleValueBoxed.equals(that.doubleValueBoxed) : that.doubleValueBoxed != null)
-            return false;
-        if (floatValueBoxed != null ? !floatValueBoxed.equals(that.floatValueBoxed) : that.floatValueBoxed != null)
-            return false;
-        if (intValueBoxed != null ? !intValueBoxed.equals(that.intValueBoxed) : that.intValueBoxed != null)
-            return false;
-        if (longValueBoxed != null ? !longValueBoxed.equals(that.longValueBoxed) : that.longValueBoxed != null)
-            return false;
-        if (nullValue != null ? !nullValue.equals(that.nullValue) : that.nullValue != null) return false;
-        if (stringValue != null ? !stringValue.equals(that.stringValue) : that.stringValue != null) return false;
-
-        return true;
+    public int hashCode() {
+        return Objects.hashCode(
+                intValue, 
+                intValueBoxed, 
+                longValue, 
+                longValueBoxed,
+                floatValue, 
+                floatValueBoxed, 
+                doubleValue, 
+                doubleValueBoxed, 
+                bigIntegerValue, 
+                bigDecimalValue, 
+                stringValue, 
+                nullValue);
     }
 
     @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = intValue;
-        result = 31 * result + (intValueBoxed != null ? intValueBoxed.hashCode() : 0);
-        result = 31 * result + (int) (longValue ^ (longValue >>> 32));
-        result = 31 * result + (longValueBoxed != null ? longValueBoxed.hashCode() : 0);
-        result = 31 * result + (floatValue != +0.0f ? Float.floatToIntBits(floatValue) : 0);
-        result = 31 * result + (floatValueBoxed != null ? floatValueBoxed.hashCode() : 0);
-        temp = Double.doubleToLongBits(doubleValue);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (doubleValueBoxed != null ? doubleValueBoxed.hashCode() : 0);
-        result = 31 * result + (bigIntegerValue != null ? bigIntegerValue.hashCode() : 0);
-        result = 31 * result + (bigDecimalValue != null ? bigDecimalValue.hashCode() : 0);
-        result = 31 * result + (stringValue != null ? stringValue.hashCode() : 0);
-        result = 31 * result + (nullValue != null ? nullValue.hashCode() : 0);
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final PrimitivePojo other = (PrimitivePojo) obj;
+        return Objects.equal(this.intValue, other.intValue) 
+                && Objects.equal(this.intValueBoxed, other.intValueBoxed) 
+                && Objects.equal(this.longValue, other.longValue) 
+                && Objects.equal(this.longValueBoxed, other.longValueBoxed) 
+                && Objects.equal(this.floatValue, other.floatValue) 
+                && Objects.equal(this.floatValueBoxed, other.floatValueBoxed) 
+                && Objects.equal(this.doubleValue, other.doubleValue) 
+                && Objects.equal(this.doubleValueBoxed, other.doubleValueBoxed) 
+                && Objects.equal(this.bigIntegerValue, other.bigIntegerValue) 
+                && Objects.equal(this.bigDecimalValue, other.bigDecimalValue) 
+                && Objects.equal(this.stringValue, other.stringValue) 
+                && Objects.equal(this.nullValue, other.nullValue);
     }
 }

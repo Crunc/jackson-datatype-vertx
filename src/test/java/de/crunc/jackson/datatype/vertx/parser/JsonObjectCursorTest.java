@@ -28,7 +28,7 @@ public class JsonObjectCursorTest {
 
     @Test
     public void getParentShouldReturnParent() {
-        AbstractTreeCursor parent = new JsonObjectCursor(object().build(), null);
+        AbstractTreeCursor<Object> parent = new JsonObjectCursor(object().build(), null);
         cursor = new JsonObjectCursor(object().build(), parent);
 
         assertThat(cursor.getParent(), is(sameInstance(parent)));
