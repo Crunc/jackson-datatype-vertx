@@ -146,10 +146,15 @@ public class JsonElementGenerator extends GeneratorBase {
      *
      * @param <T> The type of the root element of the tree.
      * @return The root element of the tree. Can be {@code null} if no elements have been generated at all.
+     * @throws IllegalStateException If generation has not yet finished (there are unclosed objects/arrays/fields).
      * @since 2.1
      */
     @SuppressWarnings("unchecked")
     public <T extends JsonElement> T get() {
+        if (state != State.Empty) {
+            throw new IllegalStateException("can not retrieve generated <JsonElement>, generation has not yet finished");
+        }
+
         return (T) rootElement;
     }
 
@@ -312,6 +317,11 @@ public class JsonElementGenerator extends GeneratorBase {
     }
 
     private void doWriteNumber(Number number) throws IOException {
+        if (_cfgNumbersAsStrings) {
+            writeString(String.valueOf(number));
+            return;
+        }
+
         switch (state) {
             case Array:
                 JsonArray array = peek();
@@ -362,7 +372,11 @@ public class JsonElementGenerator extends GeneratorBase {
 
     @Override
     public void writeNumber(String encodedValue) throws IOException {
-        throw new UnsupportedOperationException();
+        try {
+            doWriteNumber(new BigDecimal(encodedValue));
+        } catch (NumberFormatException e) {
+            throw err(e, "can not write <{0}> as number", encodedValue);
+        }
     }
 
     @Override
@@ -425,6 +439,34 @@ public class JsonElementGenerator extends GeneratorBase {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        if (isEnabled(Feature.AUTO_CLOSE_JSON_CONTENT)) {
+            autoCloseJsonContent();
+        }
+
+        super.close();
+    }
+
+    private void autoCloseJsonContent() throws IOException {
+        while (state != State.Empty) {
+            switch (state) {
+                case Object:
+                    writeEndObject();
+                    break;
+
+                case Array:
+                    writeEndArray();
+                    break;
+
+                case Field:
+                    fieldName = null;
+                    state = State.Object;
+                    break;
+            }
+        }
+    }
+
     /**
      * Shortcut for creating a new {@link JsonGenerationException} with a {@link MessageFormat} message.
      */
@@ -440,5 +482,22 @@ public class JsonElementGenerator extends GeneratorBase {
         }
 
         return new JsonGenerationException(msg);
+    }
+
+    /**
+     * Shortcut for creating a new {@link JsonGenerationException} with a {@link MessageFormat} message.
+     */
+    private JsonGenerationException err(Throwable cause, String message, Object... args) {
+
+        String msg = message;
+
+        if (args != null) {
+            try {
+                msg = MessageFormat.format(message, args);
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+
+        return new JsonGenerationException(msg, cause);
     }
 }
