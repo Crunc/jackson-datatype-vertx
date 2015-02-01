@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  * @since 2.1
  */
-public class JsonElementParserBasicArrayMappingTest {
+public class JsonElementParserSimpleArrayMappingTest {
 
     private ObjectMapper objectMapper;
     private JsonParser jp;
