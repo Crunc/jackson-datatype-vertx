@@ -2,6 +2,7 @@ package de.crunc.jackson.datatype.vertx.generator;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.crunc.jackson.datatype.vertx.ObjectMarshaller;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
