@@ -11,6 +11,8 @@ import org.vertx.java.core.json.JsonObject;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Deque;
@@ -175,7 +177,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putArray(fieldName, push(new JsonArray()));
+                object.putArray(encodeIfNecessary(fieldName), push(new JsonArray()));
                 fieldName = null;
                 break;
 
@@ -213,7 +215,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putObject(fieldName, push(new JsonObject()));
+                object.putObject(encodeIfNecessary(fieldName), push(new JsonObject()));
                 fieldName = null;
                 break;
 
@@ -232,6 +234,23 @@ public class JsonElementGenerator extends GeneratorBase {
             default:
                 throw err("can not write end object in state <{0}>", state);
         }
+    }
+
+    private String encodeIfNecessary(String value) {
+        if (isEnabled(Feature.ESCAPE_NON_ASCII)) {
+            CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
+            StringBuilder encoded = new StringBuilder();
+            for (final char c : value.toCharArray()) {
+                if (encoder.canEncode(c)) {
+                    encoded.append(c);
+                } else {
+                    encoded.append("\\u");
+                    encoded.append(Integer.toHexString(0x10000 | c).substring(1).toUpperCase());
+                }
+            }
+            return encoded.toString();
+        }
+        return value;
     }
 
     @Override
@@ -256,12 +275,12 @@ public class JsonElementGenerator extends GeneratorBase {
         switch (state) {
             case Array:
                 JsonArray array = peek();
-                array.add(text);
+                array.add(encodeIfNecessary(text));
                 break;
 
             case Field:
                 JsonObject object = peek();
-                object.putString(fieldName, text);
+                object.putString(encodeIfNecessary(fieldName), encodeIfNecessary(text));
                 fieldName = null;
                 state = State.Object;
                 break;
@@ -330,7 +349,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putNumber(fieldName, number);
+                object.putNumber(encodeIfNecessary(fieldName), number);
                 fieldName = null;
                 state = State.Object;
                 break;
@@ -357,12 +376,20 @@ public class JsonElementGenerator extends GeneratorBase {
 
     @Override
     public void writeNumber(double number) throws IOException {
-        doWriteNumber(number);
+        if (isEnabled(Feature.QUOTE_NON_NUMERIC_NUMBERS) && mustQuote(number)) {
+            writeString(Double.toString(number));
+        } else {
+            doWriteNumber(number);
+        }
     }
 
     @Override
     public void writeNumber(float number) throws IOException {
-        doWriteNumber(number);
+        if (isEnabled(Feature.QUOTE_NON_NUMERIC_NUMBERS) && mustQuote(number)) {
+            writeString(Float.toString(number));
+        } else {
+            doWriteNumber(number);
+        }
     }
 
     @Override
@@ -379,6 +406,16 @@ public class JsonElementGenerator extends GeneratorBase {
         }
     }
 
+    private boolean mustQuote(double number) {
+        return Double.isNaN(number) 
+                || Double.isInfinite(number);
+    }
+
+    private boolean mustQuote(float number) {
+        return Float.isNaN(number)
+                || Float.isInfinite(number);
+    }
+
     @Override
     public void writeBoolean(boolean b) throws IOException {
         switch (state) {
@@ -389,7 +426,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putBoolean(fieldName, b);
+                object.putBoolean(encodeIfNecessary(fieldName), b);
                 fieldName = null;
                 state = State.Object;
                 break;
@@ -409,7 +446,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putValue(fieldName, null);
+                object.putValue(encodeIfNecessary(fieldName), null);
                 fieldName = null;
                 state = State.Object;
                 break;

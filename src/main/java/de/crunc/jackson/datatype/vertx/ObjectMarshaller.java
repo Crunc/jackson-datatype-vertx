@@ -145,6 +145,7 @@ public class ObjectMarshaller {
      * Marshalls the given instance to a {@link JsonElement}.
      *
      * @param instance The instance that will be marshalled.
+     * @param objectMapper The object mapper that will be used.
      * @param <T>      The type of {@link JsonElement} that is produced.
      * @return A new {@link JsonElement} that equals the given instance.
      * @throws IOException If marshalling fails.

@@ -35,6 +35,10 @@ public class JsonElementGeneratorFeatureTest {
         }
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // WRITE_NUMBERS_AS_STRINGS
+    // -----------------------------------------------------------------------------------------------------------------
+    
     @Test
     public void shouldWriteIntAsStringIf_WRITE_NUMBERS_AS_STRINGS_Enabled() throws IOException {
         jgen.enable(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS);
@@ -112,6 +116,10 @@ public class JsonElementGeneratorFeatureTest {
                 .item("3.141"));
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // AUTO_CLOSE_JSON_CONTENT
+    // -----------------------------------------------------------------------------------------------------------------
+
     @Test
     public void shouldFinishGenerationWhenWritingFieldIf_AUTO_CLOSE_JSON_CONTENT_Enabled() throws IOException {
         jgen.enable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT);
@@ -125,7 +133,7 @@ public class JsonElementGeneratorFeatureTest {
                 {
                     jgen.writeNumberField("NumberValue", 42);
                     jgen.writeFieldName("OmittedDueToClose");
-                    
+
                     jgen.close();
                 } // not closed
             } // not closed
@@ -155,5 +163,80 @@ public class JsonElementGeneratorFeatureTest {
         } // not closed
 
         jgen.get(); // should throw IllegalStateException
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // ESCAPE_NON_ASCII
+    // -----------------------------------------------------------------------------------------------------------------
+    
+    @Test
+    public void shouldWriteStringAsEscapedStringIf_ESCAPE_NON_ASCII_Enabled() throws IOException {
+        jgen.enable(JsonGenerator.Feature.ESCAPE_NON_ASCII);
+        jgen.writeStartObject();
+        jgen.writeStringField("StringValue", "我能吞下玻璃而不伤身体。");
+        jgen.writeEndObject();
+
+        assertThat(jgen.get(), isJsonObject()
+                .prop("StringValue", "\\u6211\\u80FD\\u541E\\u4E0B\\u73BB\\u7483\\u800C\\u4E0D\\u4F24\\u8EAB\\u4F53\\u3002"));
+    }
+
+    @Test
+    public void shouldNotWriteStringAsEscapedStringIf_ESCAPE_NON_ASCII_Disabled() throws IOException {
+        jgen.disable(JsonGenerator.Feature.ESCAPE_NON_ASCII);
+        jgen.writeStartObject();
+        jgen.writeStringField("StringValue", "我能吞下玻璃而不伤身体。");
+        jgen.writeEndObject();
+
+        assertThat(jgen.get(), isJsonObject()
+                .prop("StringValue", "我能吞下玻璃而不伤身体。"));
+    }
+
+    @Test
+    public void shouldWriteFieldNameAsEscapedStringIf_ESCAPE_NON_ASCII_Enabled() throws IOException {
+        jgen.enable(JsonGenerator.Feature.ESCAPE_NON_ASCII);
+        jgen.writeStartObject();
+        jgen.writeStringField("私はガラスを食べられます。それは私を傷つけません", "watashihagarasuotaberaremasu.sorehawatashiokizutsukemasen");
+        jgen.writeEndObject();
+
+        assertThat(jgen.get(), isJsonObject()
+                .prop("\\u79C1\\u306F\\u30AC\\u30E9\\u30B9\\u3092\\u98DF\\u3079\\u3089\\u308C\\u307E\\u3059\\u3002\\u305D\\u308C\\u306F\\u79C1\\u3092\\u50B7\\u3064\\u3051\\u307E\\u305B\\u3093", 
+                        "watashihagarasuotaberaremasu.sorehawatashiokizutsukemasen"));
+    }
+
+    @Test
+    public void shouldNotWriteFieldNameAsEscapedStringIf_ESCAPE_NON_ASCII_Disabled() throws IOException {
+        jgen.disable(JsonGenerator.Feature.ESCAPE_NON_ASCII);
+        jgen.writeStartObject();
+        jgen.writeStringField("私はガラスを食べられます。それは私を傷つけません", "watashihagarasuotaberaremasu.sorehawatashiokizutsukemasen");
+        jgen.writeEndObject();
+
+        assertThat(jgen.get(), isJsonObject()
+                .prop("私はガラスを食べられます。それは私を傷つけません", "watashihagarasuotaberaremasu.sorehawatashiokizutsukemasen"));
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // QUOTE_NON_NUMERIC_NUMBERS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void shouldWriteFloatNaNAsStringIf_QUOTE_NON_NUMERIC_NUMBERS_Enabled() throws IOException {
+        jgen.enable(JsonGenerator.Feature.QUOTE_NON_NUMERIC_NUMBERS);
+        jgen.writeStartObject();
+        jgen.writeNumberField("FloatValue", Float.NaN);
+        jgen.writeEndObject();
+
+        assertThat(jgen.get(), isJsonObject()
+                .prop("FloatValue", "NaN"));
+    }
+    
+    @Test
+    public void shouldNotWriteFloatNaNAsStringIf_QUOTE_NON_NUMERIC_NUMBERS_Disabled() throws IOException {
+        jgen.disable(JsonGenerator.Feature.QUOTE_NON_NUMERIC_NUMBERS);
+        jgen.writeStartObject();
+        jgen.writeNumberField("FloatValue", Float.NaN);
+        jgen.writeEndObject();
+
+        assertThat(jgen.get(), isJsonObject()
+                .prop("FloatValue", Float.NaN));
     }
 }
