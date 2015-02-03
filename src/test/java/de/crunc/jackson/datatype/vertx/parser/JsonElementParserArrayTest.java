@@ -25,7 +25,7 @@ public class JsonElementParserArrayTest extends JsonElementParserBaseTest {
     private JsonParser jp;
     
     @Test
-    public void shouldSkipChildrenOfWholeArray() throws IOException {
+    public void shouldSkipChildrenOfRootArray() throws IOException {
         jp = createParser(array()
                 .add(1)
                 .add(3)
@@ -46,6 +46,60 @@ public class JsonElementParserArrayTest extends JsonElementParserBaseTest {
         jp.skipChildren();
 
         assertThat(jp, hasCurrentToken(END_ARRAY));
+
+        assertThat(jp, nextToken(nullValue()));
+    }
+
+    @Test
+    public void shouldSkipChildrenOfEmptyRootArray() throws IOException {
+        jp = createParser(array());
+
+        assertThat(jp, hasCurrentToken(nullValue()));
+
+        assertThat(jp, nextToken(START_ARRAY));
+
+        jp.skipChildren();
+
+        assertThat(jp, hasCurrentToken(END_ARRAY));
+
+        assertThat(jp, nextToken(nullValue()));
+    }
+
+    @Test
+    public void shouldSkipChildrenOfChildArray() throws IOException {
+        jp = createParser(array()
+                .add(array()
+                        .add(true)
+                        .add(42)
+                        .addNull()));
+
+        assertThat(jp, hasCurrentToken(nullValue()));
+
+        assertThat(jp, nextToken(START_ARRAY));
+        {
+            assertThat(jp, nextToken(START_ARRAY));
+            jp.skipChildren();
+            assertThat(jp, hasCurrentToken(END_ARRAY));
+        }
+        assertThat(jp, nextToken(END_ARRAY));
+
+        assertThat(jp, nextToken(nullValue()));
+    }
+
+    @Test
+    public void shouldSkipChildrenOfEmptyChildArray() throws IOException {
+        jp = createParser(array()
+                .add(array()));
+
+        assertThat(jp, hasCurrentToken(nullValue()));
+
+        assertThat(jp, nextToken(START_ARRAY));
+        {
+            assertThat(jp, nextToken(START_ARRAY));
+            jp.skipChildren();
+            assertThat(jp, hasCurrentToken(END_ARRAY));
+        }
+        assertThat(jp, nextToken(END_ARRAY));
 
         assertThat(jp, nextToken(nullValue()));
     }
