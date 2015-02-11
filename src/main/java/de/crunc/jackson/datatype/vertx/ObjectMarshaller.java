@@ -27,6 +27,16 @@ public class ObjectMarshaller {
     private final ObjectMapper om;
 
     /**
+     * The object mapper which is used by this marshaller.
+     *  
+     * @return An object mapper.
+     * @since 1.0
+     */
+    public ObjectMapper objectMapper() {
+        return om;
+    }
+
+    /**
      * Creates a new marshaller that uses the given object mapper for (un-)marshalling.
      *
      * @param objectMapper The object mapper that will be used.
