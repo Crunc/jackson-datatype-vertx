@@ -1,14 +1,13 @@
 package de.crunc.jackson.datatype.vertx.parser;
 
 import com.fasterxml.jackson.core.JsonToken;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonElement;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import java.math.BigInteger;
 
 /**
- * Helps finding {@link JsonToken}s in a tree of {@link JsonElement}s.
+ * Helps finding {@link JsonToken}s in a tree of {@link JsonObject}s.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  * @since 2.1

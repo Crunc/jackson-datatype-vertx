@@ -1,7 +1,7 @@
 package de.crunc.jackson.datatype.vertx;
 
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -153,7 +153,7 @@ public class JsonObjectBuilder {
         JsonObject object = new JsonObject();
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
-            object.putValue(entry.getKey(), entry.getValue());
+            object.put(entry.getKey(), entry.getValue());
         }
 
         return object;

@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.base.GeneratorBase;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonElement;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -19,7 +18,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 /**
- * Generates a tree of {@link JsonElement}.
+ * Generates a tree of {@link JsonObject}.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  * @since 2.1
@@ -64,12 +63,12 @@ public class JsonElementGenerator extends GeneratorBase {
     /**
      * The root element of the tree which is being generated.
      */
-    private JsonElement rootElement = null;
+    private Object rootElement = null;
 
     /**
      * Represents the current path into the tree which is being generated.
      */
-    private final Deque<JsonElement> elementStack = new LinkedList<JsonElement>();
+    private final Deque<Object> elementStack = new LinkedList<Object>();
 
     /**
      * Represents the type of the elements of the {@link #elementStack} with an additional {@link State#Empty} at it's
@@ -128,7 +127,7 @@ public class JsonElementGenerator extends GeneratorBase {
      * Pushes the top element from the element stack and transfers the generator in the state corresponding to the new
      * top element.
      */
-    private JsonElement pop() {
+    private Object pop() {
         fieldName = null;
         stateStack.pop();
         state = stateStack.peek();
@@ -139,7 +138,7 @@ public class JsonElementGenerator extends GeneratorBase {
      * Peeks the top element from the element stack. Does not make any changes to the generator's state.
      */
     @SuppressWarnings("unchecked")
-    private <T extends JsonElement> T peek() {
+    private <T> T peek() {
         return (T) elementStack.peek();
     }
 
@@ -152,7 +151,7 @@ public class JsonElementGenerator extends GeneratorBase {
      * @since 2.1
      */
     @SuppressWarnings("unchecked")
-    public <T extends JsonElement> T get() {
+    public <T> T get() {
         if (state != State.Empty) {
             throw new IllegalStateException("can not retrieve generated <JsonElement>, generation has not yet finished");
         }
@@ -177,7 +176,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putArray(encodeIfNecessary(fieldName), push(new JsonArray()));
+                object.put(encodeIfNecessary(fieldName), push(new JsonArray()));
                 fieldName = null;
                 break;
 
@@ -215,7 +214,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putObject(encodeIfNecessary(fieldName), push(new JsonObject()));
+                object.put(encodeIfNecessary(fieldName), push(new JsonObject()));
                 fieldName = null;
                 break;
 
@@ -280,7 +279,7 @@ public class JsonElementGenerator extends GeneratorBase {
 
             case Field:
                 JsonObject object = peek();
-                object.putString(encodeIfNecessary(fieldName), encodeIfNecessary(text));
+                object.put(encodeIfNecessary(fieldName), encodeIfNecessary(text));
                 fieldName = null;
                 state = State.Object;
                 break;
@@ -344,12 +343,12 @@ public class JsonElementGenerator extends GeneratorBase {
         switch (state) {
             case Array:
                 JsonArray array = peek();
-                array.addNumber(number);
+                array.add(number);
                 break;
 
             case Field:
                 JsonObject object = peek();
-                object.putNumber(encodeIfNecessary(fieldName), number);
+                object.put(encodeIfNecessary(fieldName), number);
                 fieldName = null;
                 state = State.Object;
                 break;
@@ -421,12 +420,12 @@ public class JsonElementGenerator extends GeneratorBase {
         switch (state) {
             case Array:
                 JsonArray array = peek();
-                array.addBoolean(b);
+                array.add(b);
                 break;
 
             case Field:
                 JsonObject object = peek();
-                object.putBoolean(encodeIfNecessary(fieldName), b);
+                object.put(encodeIfNecessary(fieldName), b);
                 fieldName = null;
                 state = State.Object;
                 break;
@@ -441,12 +440,12 @@ public class JsonElementGenerator extends GeneratorBase {
         switch (state) {
             case Array:
                 JsonArray array = peek();
-                array.add(null);
+                array.addNull();
                 break;
 
             case Field:
                 JsonObject object = peek();
-                object.putValue(encodeIfNecessary(fieldName), null);
+                object.put(encodeIfNecessary(fieldName), (String)null);
                 fieldName = null;
                 state = State.Object;
                 break;

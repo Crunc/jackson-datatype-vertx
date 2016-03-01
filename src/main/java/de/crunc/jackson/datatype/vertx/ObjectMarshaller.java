@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.crunc.jackson.datatype.vertx.generator.JsonElementGenerator;
 import de.crunc.jackson.datatype.vertx.parser.JsonElementParser;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonElement;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 /**
  * Provides operations that help using {@link ObjectMapper} to convert between object instances and {@link JsonObject}
@@ -54,43 +52,86 @@ public class ObjectMarshaller {
     /**
      * Unmarshalls the given element to an instance of the given type.
      *
-     * @param jsonElement The element that will be unmarshalled.
+     * @param jsonObject The element that will be unmarshalled.
      * @param type        The type of the instance that will be created.
      * @param <T>         The type of the instance that will be created.
      * @return A new instance of the given type.
      * @throws IOException If unmarshalling fails.
      * @since 2.1
      */
-    public <T> T unmarshall(JsonElement jsonElement, Class<T> type) throws IOException {
-        return om.readValue(new JsonElementParser(jsonElement), type);
+    public <T> T unmarshall(JsonObject jsonObject, Class<T> type) throws IOException {
+        return om.readValue(new JsonElementParser(jsonObject), type);
     }
 
     /**
      * Unmarshalls the given element to an instance of the given type.
      *
-     * @param jsonElement The element that will be unmarshalled.
+     * @param jsonArray The element that will be unmarshalled.
      * @param type        The type of the instance that will be created.
      * @param <T>         The type of the instance that will be created.
      * @return A new instance of the given type.
      * @throws IOException If unmarshalling fails.
      * @since 2.1
      */
-    public <T> T unmarshall(JsonElement jsonElement, TypeReference<T> type) throws IOException {
-        return om.readValue(new JsonElementParser(jsonElement), type);
+    public <T> T unmarshall(JsonArray jsonArray, Class<T> type) throws IOException {
+        return om.readValue(new JsonElementParser(jsonArray), type);
     }
 
     /**
      * Unmarshalls the given element to an instance of the given type.
      *
-     * @param jsonElement The element that will be unmarshalled.
+     * @param jsonObject The element that will be unmarshalled.
      * @param type        The type of the instance that will be created.
      * @param <T>         The type of the instance that will be created.
      * @return A new instance of the given type.
      * @throws IOException If unmarshalling fails.
      * @since 2.1
      */
-    public <T> T unmarshall(JsonElement jsonElement, JavaType type) throws IOException {
-        return om.readValue(new JsonElementParser(jsonElement), type);
+    public <T> T unmarshall(JsonObject jsonObject, TypeReference<T> type) throws IOException {
+        return om.readValue(new JsonElementParser(jsonObject), type);
+    }
+
+
+    /**
+     * Unmarshalls the given element to an instance of the given type.
+     *
+     * @param jsonObject The element that will be unmarshalled.
+     * @param type        The type of the instance that will be created.
+     * @param <T>         The type of the instance that will be created.
+     * @return A new instance of the given type.
+     * @throws IOException If unmarshalling fails.
+     * @since 2.1
+     */
+    public <T> T unmarshall(JsonArray jsonObject, TypeReference<T> type) throws IOException {
+        return om.readValue(new JsonElementParser(jsonObject), type);
+    }
+
+    /**
+     * Unmarshalls the given element to an instance of the given type.
+     *
+     * @param jsonObject The element that will be unmarshalled.
+     * @param type        The type of the instance that will be created.
+     * @param <T>         The type of the instance that will be created.
+     * @return A new instance of the given type.
+     * @throws IOException If unmarshalling fails.
+     * @since 2.1
+     */
+    public <T> T unmarshall(JsonObject jsonObject, JavaType type) throws IOException {
+        return om.readValue(new JsonElementParser(jsonObject), type);
+    }
+
+    /**
+     * Unmarshalls the given element to an instance of the given type.
+     *
+     * @param jsonArray The element that will be unmarshalled.
+     * @param type        The type of the instance that will be created.
+     * @param <T>         The type of the instance that will be created.
+     * @return A new instance of the given type.
+     * @throws IOException If unmarshalling fails.
+     * @since 2.1
+     */
+    public <T> T unmarshall(JsonArray jsonArray, JavaType type) throws IOException {
+        return om.readValue(new JsonElementParser(jsonArray), type);
     }
 
     /**
@@ -178,16 +219,16 @@ public class ObjectMarshaller {
     }
 
     /**
-     * Marshalls the given instance to a {@link JsonElement}.
+     * Marshalls the given instance to a {@link JsonObject}.
      *
      * @param instance The instance that will be marshalled.
-     * @param <T>      The type of {@link JsonElement} that is produced.
-     * @return A new {@link JsonElement} that equals the given instance.
+     * @param <T>      The type of {@link JsonObject} that is produced.
+     * @return A new {@link JsonObject} that equals the given instance.
      * @throws IOException If marshalling fails.
      * @since 2.1
      */
     @SuppressWarnings("unchecked")
-    public <T extends JsonElement> T marshall(Object instance) throws IOException {
+    public <T extends JsonObject> T marshall(Object instance) throws IOException {
         JsonElementGenerator jgen = new JsonElementGenerator(0, om);
         om.writeValue(jgen, instance);
         return (T) jgen.get();

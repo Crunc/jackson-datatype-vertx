@@ -5,9 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import de.crunc.jackson.datatype.vertx.matcher.MoreMatchers;
+import io.vertx.core.json.JsonArray;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.vertx.java.core.json.JsonArray;
 
 import java.io.IOException;
 import java.math.BigDecimal;

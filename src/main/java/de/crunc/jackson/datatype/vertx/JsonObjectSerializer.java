@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -63,11 +63,11 @@ class JsonObjectSerializer extends JsonBaseSerializer<JsonObject> {
     protected void serializeContents(JsonObject value, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Iterator<?> it = value.getFieldNames().iterator();
+        Iterator<?> it = value.fieldNames().iterator();
 
         while (it.hasNext()) {
             String key = (String) it.next();
-            Object ob = value.getField(key);
+            Object ob = value.getValue(key);
             if (ob == null) {
                 if (provider.isEnabled(SerializationFeature.WRITE_NULL_MAP_VALUES)) {
                     jgen.writeNullField(key);

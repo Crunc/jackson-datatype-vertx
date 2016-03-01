@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import static de.crunc.hamcrest.json.JsonMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -192,7 +191,9 @@ public class JsonElementGeneratorObjectTest {
     public void shouldWriteNumberFieldAtObject() throws IOException {
         jgen.writeStartObject();
         {
-            jgen.writeNumberField("NumberValue", new BigDecimal("0.004"));
+            jgen.writeNumberField("NumberValue", new Double(0.004d));
+            // ggh - vertx 3 doesn't support BigDecimal
+            //jgen.writeNumberField("NumberValue", new BigDecimal("0.004"));
         }
         jgen.writeEndObject();
 

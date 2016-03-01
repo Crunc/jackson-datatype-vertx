@@ -1,8 +1,8 @@
 package de.crunc.jackson.datatype.vertx.parser;
 
 import com.fasterxml.jackson.core.JsonToken;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -29,7 +29,7 @@ public class JsonObjectCursor extends AbstractObjectCursor<JsonObject, Object> {
 
     @Override
     protected Iterator<String> getFields(JsonObject object) {
-        return object.getFieldNames().iterator();
+        return object.fieldNames().iterator();
     }
 
     @Override

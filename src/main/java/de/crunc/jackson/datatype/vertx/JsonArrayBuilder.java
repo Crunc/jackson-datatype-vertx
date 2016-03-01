@@ -1,8 +1,8 @@
 package de.crunc.jackson.datatype.vertx;
 
 
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -131,7 +131,7 @@ public class JsonArrayBuilder {
      * @since 2.1
      */
     public JsonArrayBuilder addNull() {
-        values.add(null);
+        values.add(new JsonNull());
         return this;
     }
 
@@ -145,7 +145,12 @@ public class JsonArrayBuilder {
         JsonArray array = new JsonArray();
 
         for (Object value : values) {
-            array.add(value);
+            if (value instanceof JsonNull) {
+                array.addNull();
+            }
+            else {
+                array.add(value);
+            }
         }
 
         return array;

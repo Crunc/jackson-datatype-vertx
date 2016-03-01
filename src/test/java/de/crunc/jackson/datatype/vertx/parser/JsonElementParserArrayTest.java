@@ -2,7 +2,7 @@ package de.crunc.jackson.datatype.vertx.parser;
 
 import com.fasterxml.jackson.core.JsonParser;
 import org.junit.Test;
-import org.vertx.java.core.json.JsonArray;
+import io.vertx.core.json.JsonArray;
 
 import java.io.IOException;
 

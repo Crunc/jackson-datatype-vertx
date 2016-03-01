@@ -4,9 +4,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.crunc.jackson.datatype.vertx.matcher.MoreMatchers;
+import io.vertx.core.json.JsonArray;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.vertx.java.core.json.JsonArray;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -14,7 +15,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static de.crunc.jackson.datatype.vertx.JsonArrayBuilder.array;
-import static de.crunc.jackson.datatype.vertx.matcher.MoreMatchers.*;
+import static de.crunc.jackson.datatype.vertx.matcher.MoreMatchers.closeTo;
+import static de.crunc.jackson.datatype.vertx.matcher.MoreMatchers.contains;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
