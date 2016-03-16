@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Serializes values of type {@link JsonArray}.
@@ -61,10 +62,10 @@ class JsonArraySerializer extends JsonBaseSerializer<JsonArray> {
     protected void serializeContents(JsonArray array, JsonGenerator jgen, SerializerProvider provider)
             throws IOException {
 
-        Object[] value = array.toArray();
+        List value = array.getList();
 
-        for (int i = 0, len = value.length; i < len; ++i) {
-            Object ob = value[i];
+        for (int i = 0, len = value.size(); i < len; ++i) {
+            Object ob = value.get(i);
             if (ob == null) {
                 jgen.writeNull();
                 continue;

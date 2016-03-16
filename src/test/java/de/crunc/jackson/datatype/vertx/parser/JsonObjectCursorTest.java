@@ -1,8 +1,9 @@
 package de.crunc.jackson.datatype.vertx.parser;
 
 import org.junit.Test;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+
 
 import static com.fasterxml.jackson.core.JsonToken.*;
 import static de.crunc.jackson.datatype.vertx.JsonArrayBuilder.array;

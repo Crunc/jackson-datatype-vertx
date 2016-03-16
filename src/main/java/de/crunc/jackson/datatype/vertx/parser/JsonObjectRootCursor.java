@@ -1,17 +1,15 @@
 package de.crunc.jackson.datatype.vertx.parser;
 
 import com.fasterxml.jackson.core.JsonToken;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonElement;
-import org.vertx.java.core.json.JsonObject;
-
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 /**
- * Cursor for traversing a {@link JsonElement} root.
+ * Cursor for traversing a {@link JsonObject} root.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  * @since 2.1
  */
-public class JsonElementRootCursor extends AbstractRootCursor<JsonElement, Object> {
+public class JsonObjectRootCursor extends AbstractRootCursor<Object, Object> {
 
     /**
      * Creates a new root level cursor.
@@ -19,15 +17,15 @@ public class JsonElementRootCursor extends AbstractRootCursor<JsonElement, Objec
      * @param rootElement  The root element of the JSON structure.
      * @since 2.1
      */
-    JsonElementRootCursor(JsonElement rootElement) {
+    JsonObjectRootCursor(Object rootElement) {
         super(rootElement);
     }
 
     @Override
-    protected JsonToken getRootToken(JsonElement root) {
-        if (root.isObject()) {
+    protected JsonToken getRootToken(Object root) {
+        if (root instanceof JsonObject) {
             return JsonToken.START_OBJECT;
-        } else if (root.isArray()) {
+        } else if (root instanceof JsonArray) {
             return JsonToken.START_ARRAY;
         } else {
             throw new IllegalArgumentException("unknown JSON element type <" + root + ">");
@@ -35,7 +33,7 @@ public class JsonElementRootCursor extends AbstractRootCursor<JsonElement, Objec
     }
 
     @Override
-    protected Object getRootValue(JsonElement root) {
+    protected Object getRootValue(Object root) {
         return root;
     }
 

@@ -2,10 +2,9 @@ package de.crunc.jackson.datatype.vertx;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.crunc.hamcrest.json.JsonMatchers;
+import io.vertx.core.json.JsonArray;
 import org.junit.Before;
 import org.junit.Test;
-import org.vertx.java.core.json.JsonArray;
 
 import static de.crunc.hamcrest.json.JsonMatchers.isJsonArray;
 import static de.crunc.hamcrest.json.JsonMatchers.isJsonObject;

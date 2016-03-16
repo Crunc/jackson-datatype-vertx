@@ -5,7 +5,6 @@ import de.crunc.jackson.datatype.vertx.JsonArrayBuilder;
 import de.crunc.jackson.datatype.vertx.JsonObjectBuilder;
 import org.junit.After;
 import org.junit.Before;
-import org.vertx.java.core.json.JsonElement;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -38,7 +37,7 @@ abstract class JsonElementParserBaseTest {
         }
     }
 
-    protected JsonParser createParser(JsonElement element) {
+    protected JsonParser createParser(Object element) {
         JsonParser jp = new JsonElementParser(element);
         parsers.add(jp);
         return jp;

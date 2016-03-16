@@ -1,9 +1,10 @@
 package de.crunc.jackson.datatype.vertx;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vertx.core.json.JsonArray;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.vertx.java.core.json.JsonArray;
 
 import java.io.IOException;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.crunc.jackson.datatype.vertx.parser.JsonElementParser;
 import de.crunc.jackson.datatype.vertx.pojo.SamplePojo;
 import org.junit.Test;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonObject;
 
 import java.io.IOException;
 
@@ -37,7 +37,7 @@ public class ObjectMarshallerSampleTest {
         ObjectMarshaller marshaller = new ObjectMarshaller(mapper);
 
         JsonObject json = new JsonObject();
-        json.putString("message", "Hello pojo");
+        json.put("message", "Hello pojo");
 
         SamplePojo pojo = marshaller.unmarshall(json, SamplePojo.class);
 

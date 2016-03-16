@@ -3,7 +3,7 @@ package de.crunc.jackson.datatype.vertx;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.json.JsonObject;
 
 import java.io.IOException;
 

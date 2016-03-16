@@ -2,7 +2,7 @@ package de.crunc.jackson.datatype.vertx.parser;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.base.ParserMinimalBase;
-import org.vertx.java.core.json.JsonElement;
+import io.vertx.core.json.JsonObject;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import static com.fasterxml.jackson.core.JsonToken.*;
 
 /**
- * Parses instances of type {@link JsonElement}.
+ * Parses instances of type {@link JsonObject}.
  *
  * @author Hauke Jaeger, hauke.jaeger@googlemail.com
  * @since 2.1
@@ -64,11 +64,11 @@ public class JsonElementParser extends ParserMinimalBase {
      */
     protected boolean closed;
 
-    public JsonElementParser(JsonElement element) {
+    public JsonElementParser(Object element) {
         this(element, null);
     }
 
-    public JsonElementParser(JsonElement element, @Nullable ObjectCodec codec) {
+    public JsonElementParser(Object element, @Nullable ObjectCodec codec) {
         super(0);
 
         if (element == null) {
@@ -76,7 +76,7 @@ public class JsonElementParser extends ParserMinimalBase {
         }
 
         objectCodec = codec;
-        rootCursor = new JsonElementRootCursor(element);
+        rootCursor = new JsonObjectRootCursor(element);
         cursor = rootCursor;
     }
 
