@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -18,7 +18,7 @@ public class JsonObjectBuilder {
     private final Map<String, Object> values;
 
     private JsonObjectBuilder() {
-        values = new HashMap<String, Object>();
+        values = new LinkedHashMap<String, Object>();
     }
 
     /**
